@@ -2,7 +2,7 @@
 
 ## Description
 
-TSW is a simple early-warning system to detect-and-alert when any files/artifacts for download change unexpectedly, providing awareness in the event of a compromise or other unexpected change. It is currently written in Python 3 and is designed to be run as an AWS Lambda (i.e. serverless) process or as on a standard system with Python 3 installed. Hopefully it works with other serverless technologies!
+TSW is a simple early-warning system to detect-and-alert when any files/artifacts for download change unexpectedly, providing awareness in the event of a compromise or other unexpected change. It is currently written in Python 3 and is designed to be run as an AWS Lambda (i.e. serverless) process or as a process on a standard system with Python 3 installed. Hopefully it works with other serverless technologies!
 
 ### Goals of this project
 
@@ -11,6 +11,7 @@ In no particular order:
 * keep this code straight-forward to read+understand
 * keep this code simple:
    * only rely on Python 3 standard libraries
+   * rely on external mechanisms to trigger/schedule the script (don't build into this code!)
    * rely on external mechanisms to take alert actions (don't build into this code!)
 * maintain ease-of-use for users
 
