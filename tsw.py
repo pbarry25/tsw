@@ -22,7 +22,8 @@ class AWSLambdaSumMismatched(Exception): pass
 ### Globals
 VERSION = "0.1"
 TARGET_URL = os.environ["TARGET_URL"]
-EXPECTED_SUM = os.environ["EXPECTED_SUM"]
+EXPECTED_SUM = os.environ.get("EXPECTED_SUM", None)
+EXPECTED_SHA256_SUM = os.environ.get("EXPECTED_SHA256_SUM", None)
 
 ### Code
 
@@ -32,7 +33,8 @@ def sum_file(target, expected, read_size = 10000):
     try:
         response = urllib.request.urlopen(target)
         read_byte_cnt = 0
-        hash_sum = hashlib.sha1()
+        # create hashers
+        sums = {algo: hashlib.new(algo) for algo, digest in expected.items() if digest}
         while True:
             data = response.read(read_size)
             if len(data) == 0:
@@ -40,7 +42,9 @@ def sum_file(target, expected, read_size = 10000):
                     # Only say we're done if we read SOMETHING...
                     read_finished = True
                 break
-            hash_sum.update(data)
+            # update all sums
+            for sum in sums.values():
+                sum.update(data)
             read_byte_cnt = read_byte_cnt + len(data)
     except:
         # Serverless (AWS Lambda) won't make it here, check below...
@@ -48,13 +52,17 @@ def sum_file(target, expected, read_size = 10000):
     if read_finished is not True:
         # This covers AWS Lambda having an issue in retrieving and summing the target...
         return SumRetCodes.RequestError
-    if hash_sum.hexdigest() != expected:
-        return SumRetCodes.Mismatched
+    for algo, sum in sums.items():
+        print(algo, sum.hexdigest(), expected[algo])
+        if sum.hexdigest() != expected[algo]:
+            return SumRetCodes.Mismatched
     return SumRetCodes.Matched
 
 # Amazon Lambda entry point...
 def lambda_handler(event, context):
-    ret = sum_file(TARGET_URL, EXPECTED_SUM)
+    ret = sum_file(TARGET_URL, {
+        'sha1': EXPECTED_SUM,
+        'sha256': EXPECTED_SHA256_SUM})
     if ret == SumRetCodes.RequestError:
         raise(AWSLambdaRequestError("Failed to read file at TARGET_URL"))
     elif ret == SumRetCodes.Mismatched:
@@ -63,7 +71,9 @@ def lambda_handler(event, context):
 
 # Standalone script entry point...
 if __name__ == "__main__":
-    ret = sum_file(TARGET_URL, EXPECTED_SUM)
+    ret = sum_file(TARGET_URL, {
+        'sha1': EXPECTED_SUM,
+        'sha256': EXPECTED_SHA256_SUM})
     if ret == SumRetCodes.RequestError:
         exit(2)
     elif ret == SumRetCodes.Mismatched:
