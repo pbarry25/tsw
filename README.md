@@ -27,7 +27,7 @@ TSW is really just one file: `tsw.py`, and only requires a standard Python 3 ins
    * TARGET_URL: <the URL of the artifact you want verified hasn't changed>
    * EXPECTED_SUM: <the sum you are expecting the artifact to match, hex string format>
 
-At this point, you can add a [time-based trigger](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-run-lambda-schedule.html) for your Lambda or whatever you like there. You can also set up [monitoring to take actions](https://aws.amazon.com/getting-started/hands-on/handle-serverless-application-errors-step-functions-lambda/) (like alerting!) then the current sum does not match the expected sum.
+At this point, you can add a [time-based trigger](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-run-lambda-schedule.html) for your Lambda or whatever you like there. You can also set up [monitoring to take actions](https://aws.amazon.com/getting-started/hands-on/handle-serverless-application-errors-step-functions-lambda/) (like alerting!) when the current sum does not match the expected sum.
 
 #### Linux
 
