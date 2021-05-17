@@ -35,6 +35,14 @@ You can manually run TSW on a Linux commandline like so:
 
 `TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SUM="<sha1sum hex string value>" ./tsw.py`
 
+Example passing run:
+
+```
+$ TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" ./tsw.py
+$ echo $?
+0
+```
+
 You can setup a periodic running of your script via [cron](https://opensource.com/article/17/11/how-use-cron-linux). Additionally, cron [can email you](https://askubuntu.com/questions/418237/how-to-detect-error-in-cron-jobs) when `tsw.py` returns an error (like sum mismatch!).
 
 As a random datapoint, you can currently get a dedicated EC2 ARM 64 t4g.nano Linux instance in AWS for less than $4/month. And an ECS container should be even cheaper...!
