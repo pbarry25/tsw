@@ -42,6 +42,8 @@ Example passing run:
 
 ```
 $ TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" EXPECTED_SHA256_SUM="e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a" ./tsw.py
+sha1 620f9d32b2f1c11a1cd45181ba6ea055ff206b27 620f9d32b2f1c11a1cd45181ba6ea055ff206b27
+sha256 e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a
 $ echo $?
 0
 ```
