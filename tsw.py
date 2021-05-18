@@ -12,10 +12,12 @@ import hashlib
 
 ### Classes
 class SumRetCodes(Enum):
+    MissingSum = auto()
     RequestError = auto()
     Matched = auto()
     Mismatched = auto()
 
+class AWSLambdaSumMissing(Exception): pass
 class AWSLambdaRequestError(Exception): pass
 class AWSLambdaSumMismatched(Exception): pass
 
@@ -29,12 +31,16 @@ EXPECTED_SHA256_SUM = os.environ.get("EXPECTED_SHA256_SUM", None)
 
 # Retrieve file at 'target' URL, sum it, verify it is the expected sum...
 def sum_file(target, expected, read_size = 10000):
+    # create hashers
+    sums = {algo: hashlib.new(algo) for algo, digest in expected.items() if digest}
+    # If no sums were provided to check against, we're done...
+    if not sums:
+        return SumRetCodes.MissingSum
+
     read_finished = False
     try:
         response = urllib.request.urlopen(target)
         read_byte_cnt = 0
-        # create hashers
-        sums = {algo: hashlib.new(algo) for algo, digest in expected.items() if digest}
         while True:
             data = response.read(read_size)
             if len(data) == 0:
@@ -63,7 +69,9 @@ def lambda_handler(event, context):
     ret = sum_file(TARGET_URL, {
         'sha1': EXPECTED_SUM,
         'sha256': EXPECTED_SHA256_SUM})
-    if ret == SumRetCodes.RequestError:
+    if ret == SumRetCodes.MissingSum:
+        raise(AWSLambdaSumMissing("No sums provided to check against"))
+    elif ret == SumRetCodes.RequestError:
         raise(AWSLambdaRequestError("Failed to read file at TARGET_URL"))
     elif ret == SumRetCodes.Mismatched:
         raise(AWSLambdaSumMismatched("Artifact checksums did NOT match"))
@@ -74,7 +82,9 @@ if __name__ == "__main__":
     ret = sum_file(TARGET_URL, {
         'sha1': EXPECTED_SUM,
         'sha256': EXPECTED_SHA256_SUM})
-    if ret == SumRetCodes.RequestError:
+    if ret == SumRetCodes.MissingSum:
+        exit(4)
+    elif ret == SumRetCodes.RequestError:
         exit(2)
     elif ret == SumRetCodes.Mismatched:
         exit(3)
