@@ -39,11 +39,17 @@ At this point, you can add a [time-based trigger](https://docs.aws.amazon.com/ev
 
 You can manually run TSW on a Linux commandline in one of the following ways:
 
-`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SUM="<sha1sum hex string value>" ./tsw.py`
-`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA224_SUM="<sha224sum hex string value> ./tsw.py`
-`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA256_SUM="<sha256sum hex string value> ./tsw.py`
-`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA384_SUM="<sha384sum hex string value> ./tsw.py`
-`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA512_SUM="<sha512sum hex string value> ./tsw.py`
+```
+TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SUM="<sha1sum hex string value>" ./tsw.py
+
+TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA224_SUM="<sha224sum hex string value> ./tsw.py
+
+TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA256_SUM="<sha256sum hex string value> ./tsw.py
+
+TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA384_SUM="<sha384sum hex string value> ./tsw.py
+
+TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA512_SUM="<sha512sum hex string value> ./tsw.py
+```
 
 NOTE: only one `EXPECTED_` var is required, but more than one can be provided if desired.
 
