@@ -23,9 +23,16 @@ class AWSLambdaSumMismatched(Exception): pass
 
 ### Globals
 VERSION = "0.1"
+
 TARGET_URL = os.environ["TARGET_URL"]
-EXPECTED_SUM = os.environ.get("EXPECTED_SUM", None)
-EXPECTED_SHA256_SUM = os.environ.get("EXPECTED_SHA256_SUM", None)
+
+SUMS_TO_CHECK = {
+    'sha1':         os.environ.get("EXPECTED_SUM", None),
+    'sha224':       os.environ.get("EXPECTED_SHA224_SUM", None),
+    'sha256':       os.environ.get("EXPECTED_SHA256_SUM", None),
+    'sha384':       os.environ.get("EXPECTED_SHA384_SUM", None),
+    'sha512':       os.environ.get("EXPECTED_SHA512_SUM", None),
+}
 
 ### Code
 
@@ -66,9 +73,7 @@ def sum_file(target, expected, read_size = 10000):
 
 # Amazon Lambda entry point...
 def lambda_handler(event, context):
-    ret = sum_file(TARGET_URL, {
-        'sha1': EXPECTED_SUM,
-        'sha256': EXPECTED_SHA256_SUM})
+    ret = sum_file(TARGET_URL, SUMS_TO_CHECK)
     if ret == SumRetCodes.MissingSum:
         raise(AWSLambdaSumMissing("No sums provided to check against"))
     elif ret == SumRetCodes.RequestError:
@@ -79,9 +84,7 @@ def lambda_handler(event, context):
 
 # Standalone script entry point...
 if __name__ == "__main__":
-    ret = sum_file(TARGET_URL, {
-        'sha1': EXPECTED_SUM,
-        'sha256': EXPECTED_SHA256_SUM})
+    ret = sum_file(TARGET_URL, SUMS_TO_CHECK)
     if ret == SumRetCodes.MissingSum:
         exit(4)
     elif ret == SumRetCodes.RequestError:
