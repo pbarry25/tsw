@@ -19,26 +19,35 @@ In no particular order:
 
 TSW is really just one file: `tsw.py`, and only requires a standard Python 3 installation to work. This section calls out two supported installation methods, though other ways to install+use certainly exist.
 
-Any expected sum values that are omitted are not checked, e.g. using just EXPECTED_SHA256_SUM will only validate the SHA256 sum, but not the SHA1.
+NOTE: all sum values provided via `EXPECTED_` environmental vars will be checked against the artifact at `TARGET_URL`, with an error being returned if ANY of the expected sums do not match. Any expected sum values that are omitted are not checked, e.g. using just EXPECTED_SHA256_SUM will only validate the SHA256 sum, but not the other supported SHA values.
 
 #### AWS Lambda (serverless)
 
 1. Create a new AWS Lambda python 3 application
 1. Copy the `tsw.py` code in for the Lambda code
-1. Add two config environment variables with the following Key:Value settings
+1. Add config environment variables with the following Key:Value settings (NOTE: only one `EXPECTED_` var is required, but more than one can be provided if desired)
    * TARGET_URL: <the URL of the artifact you want verified hasn't changed>
    * EXPECTED_SUM: <the sha1 sum you are expecting the artifact to match, hex string format> (optional)
+   * EXPECTED_SHA224_SUM: <the sha224 sum you are expecting the artifact to match, hex string format> (optional)
    * EXPECTED_SHA256_SUM: <the sha256 sum you are expecting the artifact to match, hex string format> (optional)
+   * EXPECTED_SHA384_SUM: <the sha384 sum you are expecting the artifact to match, hex string format> (optional)
+   * EXPECTED_SHA512_SUM: <the sha512 sum you are expecting the artifact to match, hex string format> (optional)
 
 At this point, you can add a [time-based trigger](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-run-lambda-schedule.html) for your Lambda or whatever you like there. You can also set up [monitoring to take actions](https://aws.amazon.com/getting-started/hands-on/handle-serverless-application-errors-step-functions-lambda/) (like alerting!) when the current sum does not match the expected sum.
 
 #### Linux
 
-You can manually run TSW on a Linux commandline like so:
+You can manually run TSW on a Linux commandline in one of the following ways:
 
-`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SUM="<sha1sum hex string value>" EXPECTED_SHA256_SUM="<sha256sum hex string value> ./tsw.py`
+`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SUM="<sha1sum hex string value>" ./tsw.py`
+`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA224_SUM="<sha224sum hex string value> ./tsw.py`
+`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA256_SUM="<sha256sum hex string value> ./tsw.py`
+`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA384_SUM="<sha384sum hex string value> ./tsw.py`
+`TARGET_URL="<http/https URL to hosted artifact to check>" EXPECTED_SHA512_SUM="<sha512sum hex string value> ./tsw.py`
 
-Example passing run:
+NOTE: only one `EXPECTED_` var is required, but more than one can be provided if desired.
+
+Example passing run, checking sha1 and sha256 sums:
 
 ```
 $ TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" EXPECTED_SHA256_SUM="e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a" ./tsw.py
