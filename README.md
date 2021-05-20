@@ -1,5 +1,7 @@
 # TSW
 
+[![CI](https://github.com/pbarry25/tsw/actions/workflows/main.yml/badge.svg)](https://github.com/pbarry25/tsw/actions/workflows/main.yml)
+
 ## Description
 
 TSW is a simple early-warning system to detect-and-alert when any files/artifacts for download change unexpectedly, providing awareness in the event of a compromise or other unexpected change. It is currently written in Python 3 and is designed to be run as an AWS Lambda (i.e. serverless) process or as a process on a standard system with Python 3 installed. Hopefully it works with other serverless technologies!
