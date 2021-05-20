@@ -1,0 +1,38 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Test tsw.py under Linux..."
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: Test matching sums/digests
+        run: |
+          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" ./tsw.py
+          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA224_SUM="c68a2c49c3a32fbf5485efabbb2aa442a683ee39af3d6c85879db77a" ./tsw.py
+          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA256_SUM="e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a" ./tsw.py
+          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA384_SUM="20b027b17d965b44e0f7b9b22b74cfea5b3aa2a7cccbbc22e3546e8301eac57e0ff8f2dc14fab360938c49d1d42f2676" ./tsw.py 
+          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA512_SUM="f0dbb9b29ae3e0d33286b76da6f6d75439b4099f67fe59a2bc6c185ee33027bd4c25131590dec9149ba031821e725ff980c9d2df68cff559c475b4bd50180e09" ./tsw.py
+          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" EXPECTED_SHA224_SUM="c68a2c49c3a32fbf5485efabbb2aa442a683ee39af3d6c85879db77a" EXPECTED_SHA256_SUM="e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a" EXPECTED_SHA384_SUM="20b027b17d965b44e0f7b9b22b74cfea5b3aa2a7cccbbc22e3546e8301eac57e0ff8f2dc14fab360938c49d1d42f2676" EXPECTED_SHA512_SUM="f0dbb9b29ae3e0d33286b76da6f6d75439b4099f67fe59a2bc6c185ee33027bd4c25131590dec9149ba031821e725ff980c9d2df68cff559c475b4bd50180e09" ./tsw.py
