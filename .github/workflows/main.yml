@@ -25,11 +25,6 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a set of commands using the runners shell
-      - name: Test matching sums/digests
+      - name: Test behavior correctness of tsw.py...
         run: |
-          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" ./tsw.py
-          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA224_SUM="c68a2c49c3a32fbf5485efabbb2aa442a683ee39af3d6c85879db77a" ./tsw.py
-          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA256_SUM="e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a" ./tsw.py
-          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA384_SUM="20b027b17d965b44e0f7b9b22b74cfea5b3aa2a7cccbbc22e3546e8301eac57e0ff8f2dc14fab360938c49d1d42f2676" ./tsw.py 
-          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SHA512_SUM="f0dbb9b29ae3e0d33286b76da6f6d75439b4099f67fe59a2bc6c185ee33027bd4c25131590dec9149ba031821e725ff980c9d2df68cff559c475b4bd50180e09" ./tsw.py
-          TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENSE" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" EXPECTED_SHA224_SUM="c68a2c49c3a32fbf5485efabbb2aa442a683ee39af3d6c85879db77a" EXPECTED_SHA256_SUM="e5784e879dc2c2a720bb0f71481d93de71e1a1a865ce5d8d008b208bc595033a" EXPECTED_SHA384_SUM="20b027b17d965b44e0f7b9b22b74cfea5b3aa2a7cccbbc22e3546e8301eac57e0ff8f2dc14fab360938c49d1d42f2676" EXPECTED_SHA512_SUM="f0dbb9b29ae3e0d33286b76da6f6d75439b4099f67fe59a2bc6c185ee33027bd4c25131590dec9149ba031821e725ff980c9d2df68cff559c475b4bd50180e09" ./tsw.py
+          ./test.sh
