@@ -8,7 +8,7 @@ function check_ret_code() {
 	if [ ${RET_CODE} -ne ${EXPECTED_CODE} ]; then
 		echo
 		echo
-		echo "ERROR with ${TEST_MSG}: expected exit code ${EXPECTED_CODE}, received ${RET_CODE}" 1>&2
+		echo "ERROR with ${TEST_MSG}: expected exit code ${EXPECTED_CODE}, received ${RET_CODE}"
 		exit 2
 	fi
 }
