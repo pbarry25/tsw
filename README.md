@@ -69,6 +69,18 @@ You can setup a periodic running of your script via [cron](https://opensource.co
 
 As a random datapoint, you can currently get a dedicated EC2 ARM 64 t4g.nano Linux instance in AWS for less than $4/month. And an ECS container should be even cheaper...!
 
+### Testing
+
+You can run `tsw.py` through its paces with the `test.sh` shell script on a *nix system:
+
+```
+$ ./test.sh 
+Testing success outcomes... Done.
+Testing failure outcomes... Done.
+```
+
+The GitHub repo will automatically run these test when a PR is cut/updated and on commit to the `main` branch.
+
 ### Potential improvements
 
 Living list of future ideas:
