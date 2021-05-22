@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
+#
+# Run tsw.py through its paces...
 
-function check_ret_code() {
-	RET_CODE=${1}
-	EXPECTED_CODE=${2}
-	TEST_MSG=${3}
+function run_test() {
+	TEST_CMD="${1}"
+	TEST_MSG="${2}"
+	EXPECTED_CODE=${3}
 
+	eval ${TEST_CMD} > /dev/null
+	RET_CODE=${?}
 	if [ ${RET_CODE} -ne ${EXPECTED_CODE} ]; then
 		echo
 		echo
 		echo "ERROR with ${TEST_MSG}: expected exit code ${EXPECTED_CODE}, received ${RET_CODE}"
+		echo "    failed test cmdline: ${TEST_CMD}"
 		exit 2
 	fi
 }
@@ -22,48 +27,30 @@ EXPECTED_SHA512_SUM="f0dbb9b29ae3e0d33286b76da6f6d75439b4099f67fe59a2bc6c185ee33
 
 echo -n "Testing success outcomes... "
 
-TARGET_URL="${TARGET_URL}" EXPECTED_SUM="${EXPECTED_SUM}" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 0 "SHA1SUM test"
+run_test "TARGET_URL=\"${TARGET_URL}\" EXPECTED_SUM=\"${EXPECTED_SUM}\" ./tsw.py" "SHA1SUM test" 0
 
-TARGET_URL="${TARGET_URL}" EXPECTED_SHA224_SUM="${EXPECTED_SHA224_SUM}" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 0 "SHA224SUM test"
+run_test "TARGET_URL=\"${TARGET_URL}\" EXPECTED_SHA224_SUM=\"${EXPECTED_SHA224_SUM}\" ./tsw.py" "SHA224SUM test" 0
 
-TARGET_URL="${TARGET_URL}" EXPECTED_SHA256_SUM="${EXPECTED_SHA256_SUM}" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 0 "SHA256SUM test"
+run_test "TARGET_URL=\"${TARGET_URL}\" EXPECTED_SHA256_SUM=\"${EXPECTED_SHA256_SUM}\" ./tsw.py" "SHA256SUM test" 0
 
-TARGET_URL="${TARGET_URL}" EXPECTED_SHA384_SUM="${EXPECTED_SHA384_SUM}" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 0 "SHA384SUM test"
+run_test "TARGET_URL=\"${TARGET_URL}\" EXPECTED_SHA384_SUM=\"${EXPECTED_SHA384_SUM}\" ./tsw.py" "SHA384SUM test" 0
 
-TARGET_URL="${TARGET_URL}" EXPECTED_SHA512_SUM="${EXPECTED_SHA512_SUM}" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 0 "SHA512SUM test"
+run_test "TARGET_URL=\"${TARGET_URL}\" EXPECTED_SHA512_SUM=\"${EXPECTED_SHA512_SUM}\" ./tsw.py" "SHA512SUM test" 0
 
-TARGET_URL="${TARGET_URL}" EXPECTED_SUM="${EXPECTED_SUM}" EXPECTED_SHA224_SUM="${EXPECTED_SHA224_SUM}" EXPECTED_SHA256_SUM="${EXPECTED_SHA256_SUM}" EXPECTED_SHA384_SUM="${EXPECTED_SHA384_SUM}" EXPECTED_SHA512_SUM="${EXPECTED_SHA512_SUM}" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 0 "SHA-ALL-SUM test"
+run_test "TARGET_URL=\"${TARGET_URL}\" EXPECTED_SUM=\"${EXPECTED_SUM}\" EXPECTED_SHA224_SUM=\"${EXPECTED_SHA224_SUM}\" EXPECTED_SHA256_SUM=\"${EXPECTED_SHA256_SUM}\" EXPECTED_SHA384_SUM=\"${EXPECTED_SHA384_SUM}\" EXPECTED_SHA512_SUM=\"${EXPECTED_SHA512_SUM}\" ./tsw.py" "SHA-ALL-SUM test" 0
 
 echo "Done."
 echo -n "Testing failure outcomes... "
 set +e
 
 # Missing sum
-TARGET_URL="${TARGET_URL}" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 4 "missing sum test"
+run_test "TARGET_URL=\"${TARGET_URL}\" ./tsw.py" "missing sum test" 4
 
 # Invalid URL
-TARGET_URL="https://raw.githubusercontent.com/pbarry25/tsw/main/LICENS" EXPECTED_SUM="620f9d32b2f1c11a1cd45181ba6ea055ff206b27" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 2 "invalid URL test"
+run_test "TARGET_URL=\"https://raw.githubusercontent.com/pbarry25/tsw/main/LICENS\" EXPECTED_SUM=\"620f9d32b2f1c11a1cd45181ba6ea055ff206b27\" ./tsw.py" "invalid URL test" 2
 
 # Incorrect sum
-TARGET_URL="${TARGET_URL}" EXPECTED_SUM="asd" ./tsw.py > /dev/null
-RET_CODE=${?}
-check_ret_code ${RET_CODE} 3 "SHA1SUM mismatch test"
+run_test "TARGET_URL=\"${TARGET_URL}\" EXPECTED_SUM=\"asd\" ./tsw.py" "SHA1SUM mismatch test" 3
 
 echo "Done."
 
