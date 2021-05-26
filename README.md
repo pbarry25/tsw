@@ -1,5 +1,7 @@
 # TSW
 
+![TSW Logo](https://github.com/pbarry25/tsw/images/TSW.png)
+
 [![CI](https://github.com/pbarry25/tsw/actions/workflows/main.yml/badge.svg)](https://github.com/pbarry25/tsw/actions/workflows/main.yml)
 
 ## Description
