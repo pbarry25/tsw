@@ -103,6 +103,6 @@ Living list of things not planned (up for debate!):
 
 ## Name and impetus
 
-The project name comes from the three-letter broadcast code of the [Emergency Alert System (EAS)](https://web.archive.org/web/20210419131359/https://www.weather.gov/nwr/eventcodes) to warn of tsunamis. The impetus/inspriation of this bit of work was the [codecov supply chain attack](https://web.archive.org/web/20210421181028/https://thenewstack.io/not-your-usual-supply-chain-hack-the-codecov-bash-uploader-blunder/), which utilized a modified download file that went undetected and leaked a bunch of sensitive user data --like credentials-- to an unauthorized party.
+The project name comes from the three-letter broadcast code of the [Emergency Alert System (EAS)](https://web.archive.org/web/20210419131359/https://www.weather.gov/nwr/eventcodes) to warn of tsunamis. The impetus/inspriation of this bit of work was the [codecov supply chain attack](https://web.archive.org/web/20210421181028/https://thenewstack.io/not-your-usual-supply-chain-hack-the-codecov-bash-uploader-blunder/), which utilized an attacker-modified download file that went undetected and resulted in leaks of a bunch of sensitive user data --like credentials-- to an unauthorized party.
 
 ![TSW Logo](https://raw.githubusercontent.com/pbarry25/tsw/main/images/TSW.png)
